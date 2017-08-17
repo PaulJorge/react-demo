@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://static.runoob.com/assets/react/react-0.14.7/build/react.min.js"></script>
+    <script src="http://static.runoob.com/assets/react/react-0.14.7/build/react-dom.min.js"></script>
+    <script src="http://static.runoob.com/assets/react/browser.min.js"></script>
+</head>
+<body>
+   <div class="out">
+
+   </div>
+</body>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/babel">
+    /**
+     * Created by xalo on 17/1/4.
+     */
+    var title={
+        fontSize:20,
+        color:"red",
+        fontWeight:"bold"
+    };
+    var SubComponent1=React.createClass({
+        render:function(){
+            return(<span style={title}>{this.props.title}:</span>);
+        }
+    });
+    var SubComponent2=React.createClass({
+        render:function(){
+            return(<span>{this.props.con}</span>);
+        }
+    });
+
+    var Component=React.createClass({
+        render:function(){
+            var title=this.props.title;
+            var con=this.props.con;
+            var subcoms=[];
+            var com1=<SubComponent1 title={title}/>;
+            var com2=<SubComponent2 con={con}/>;
+            subcoms.push(com1);
+            subcoms.push(com2);
+            return (<p>
+                {subcoms}
+            </p>);
+        }
+    });
+    //创建父级组件
+    var superStyle={
+        border:"1px solid red",
+        boxShadow:"4px 4px 4px gray",
+        width:220,
+        margin:10,
+        padding:10,
+        boxSizing:"border-box",
+        display:"inline-block"
+    };
+    var components=[];
+    var SuperComponent=React.createClass({
+        componentWillMount:function(){
+            console.log("组件将要挂载");
+        },
+        componentDidMount:function(){
+            console.log("组件已经挂载");
+        },
+        render:function(){
+            var obj=this.props.data;
+            var coms=[];//存储二级组件对象
+            for(var key in obj){
+                var component=<Component title={key} con={obj[key]}></Component>;
+                coms.push(component);
+            }
+            return(<div style={superStyle}>
+                {coms}
+            </div>)
+        }
+    });
+    var dataBase=[{name:"小明",tel:"13103955005",position:"产品经理",company:"木子科技"},{name:"小赵",tel:"13103955005",position:"产品经理助理",company:"木子科技"},{name:"小华",tel:"13103955005",position:"技术总监",company:"木子科技"},{name:"小菜",tel:"13103955005",position:"营销专员",company:"木子科技"},{name:"小毛",tel:"13103955005",position:"商务BD",company:"木子科技"},{name:"小叶",tel:"13103955005",position:"web前端",company:"木子科技"}];
+    var components=[];//数组存储组件对象
+    for(var i=0;i<dataBase.length;i++){
+        var obj=dataBase[i];
+        var superC=<SuperComponent data={obj}/>;
+        components.push(superC);
+    }
+    ReactDOM.render(<div>{components}</div>,document.getElementsByClassName("out")[0]);
+</script>
+</html>
